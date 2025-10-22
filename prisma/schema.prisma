@@ -36,12 +36,18 @@ model Curator {
   password         String
   institution      String
   verified         Boolean       @default(false)
+  role             Role          @default(CURATOR)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   courses          Course[]
   EmailTokens      EmailTokens[]
 
   @@map("curators")
+}
+
+enum Role {
+  CURATOR
+  STUDENT
 }
 
 model EmailTokens {

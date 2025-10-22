@@ -14,4 +14,5 @@ const validateBody = (schema: z.ZodType):RequestHandler => (req, res, next) => {
 }
 
 
-export const register = validateBody(schemas.CreateCurator)
+export const register = validateBody(schemas.CreateCurator);
+export const login = validateBody(schemas.LoginCurator);

@@ -8,3 +8,4 @@ const validateBody = (schema) => (req, res, next) => {
     next();
 };
 export const register = validateBody(schemas.CreateCurator);
+export const login = validateBody(schemas.LoginCurator);

@@ -18,3 +18,7 @@ export const CreateCurator = CuratorSchema.pick({
     password: true,
     institution: true
 }).strict();
+export const LoginCurator = CuratorSchema.pick({
+    email: true,
+    password: true
+}).strict();

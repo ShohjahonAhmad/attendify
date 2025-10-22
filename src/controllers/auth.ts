@@ -2,7 +2,10 @@ import { RequestHandler } from "express";
 import prisma from "../prisma.js";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import jwt from "jsonwebtoken";
 import confirmEmail from "../utils/confirmEmail.js";
+import dotenv from 'dotenv';
+dotenv.config()
 
 export const register: RequestHandler = async (req, res, next) => {
     const { password, email, uniqueIdentifier } = req.body;
@@ -47,7 +50,31 @@ export const register: RequestHandler = async (req, res, next) => {
 }
 
 export const login: RequestHandler = async (req, res, next) => {
-    res.sendStatus(200);
+    const {email, password} = req.body;
+
+    const curator = await prisma.curator.findUnique({
+        where: {
+            email
+        }
+    })
+
+    if(!curator){
+        res.status(401).json({error: "Invalid email or password"});
+        return;
+    }
+
+    const isCorrectPassword = await bcrypt.compare(password, curator.password);
+
+    if(!isCorrectPassword) {
+        res.status(401).json({error: "Invalid email or password"});
+        return;
+    }
+
+    const token = jwt.sign({id: curator.id, role: curator.role}, process.env.JWT_SECRET_KEY!, {
+        expiresIn: '24h'
+    })
+
+    res.status(200).json({token})
 }
 
 export const acceptEmail: RequestHandler = async (req, res, next) => {
