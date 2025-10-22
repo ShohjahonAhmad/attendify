@@ -14,11 +14,69 @@ datasource db {
 }
 
 model Student {
-  id            Int    @id @default(autoincrement()) @map("users_id")
-  firstName     String
-  lastName      String
-  matriculation String @unique
-  password      String
+  id               Int          @id @default(autoincrement()) @map("users_id")
+  firstName        String       @map("first_name")
+  lastName         String       @map("last_name")
+  uniqueIdentifier String       @unique @map("unique_identifier")
+  password         String
+  institution      String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  attendance       Attendance[]
 
   @@map("students")
+}
+
+model Curator {
+  id               Int           @id @default(autoincrement()) @map("curator_id")
+  firstName        String        @map("first_name")
+  lastName         String        @map("last_name")
+  email            String        @unique
+  uniqueIdentifier String        @unique @map("unique_identifier")
+  password         String
+  institution      String
+  verified         Boolean       @default(false)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  courses          Course[]
+  EmailTokens      EmailTokens[]
+
+  @@map("curators")
+}
+
+model EmailTokens {
+  id        Int      @id @default(autoincrement()) @map("email_tokens_id")
+  token     String   @unique
+  expires   DateTime
+  curator   Curator  @relation(fields: [curatorId], references: [id])
+  curatorId Int
+
+  @@index([expires])
+}
+
+model Course {
+  id          Int          @id @default(autoincrement()) @map("courses_id")
+  name        String
+  curatorId   Int
+  curator     Curator      @relation(fields: [curatorId], references: [id])
+  attendances Attendance[]
+  createdAt   DateTime     @default(now())
+}
+
+model Attendance {
+  id        Int       @id @default(autoincrement()) @map("attendance_id")
+  students  Student[]
+  qrCode    QrCode    @relation(fields: [qrCodeId], references: [id])
+  qrCodeId  Int       @unique
+  course    Course    @relation(fields: [courseId], references: [id])
+  courseId  Int
+  createdAt DateTime  @default(now())
+}
+
+model QrCode {
+  id           Int         @id @default(autoincrement())
+  code         String
+  attendance   Attendance?
+  attendanceId Int
+  createdAt    DateTime    @default(now())
 }
