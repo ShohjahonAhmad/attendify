@@ -54,7 +54,7 @@ model EmailTokens {
   id        Int      @id @default(autoincrement()) @map("email_tokens_id")
   token     String   @unique
   expires   DateTime
-  curator   Curator  @relation(fields: [curatorId], references: [id])
+  curator   Curator  @relation(fields: [curatorId], references: [id], onDelete: Cascade)
   curatorId Int
 
   @@index([expires])
