@@ -1,5 +1,6 @@
 import express from 'express';
 import authRouter from "./routes/auth.js"
+import curatorsRouter from "./routes/curators.js"
 import dotenv from 'dotenv';
 import authenticated from './middleware/authenticated.js';
 import cors from 'cors'
@@ -12,6 +13,7 @@ app.use(cors());
 app.get("/", (req, res) => {
     res.send("Hello World!")
 })
+app.use("/curators", curatorsRouter)
 app.use("/auth", authRouter)
 app.use(authenticated)
 
