@@ -1,4 +1,13 @@
+import z from 'zod';
 import * as schemas from "./schemas.js";
+export const validateParamsId = (req, res, next) => {
+    const result = z.number().int().nonnegative().safeParse(parseInt(req.params.id));
+    if (!result.success) {
+        res.status(400).json({ error: result.error.issues });
+        return;
+    }
+    next();
+};
 const validateBody = (schema) => (req, res, next) => {
     const result = schema.safeParse(req.body);
     if (!result.success) {

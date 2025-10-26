@@ -6,8 +6,8 @@ const router = Router();
 
 router.get("/", coursesControllers.getCourses);
 router.post("/", validation.course, coursesControllers.createCourse)
-router.get("/:id", coursesControllers.getCourse);
-router.patch("/:id", validation.course, coursesControllers.updateCourse);
-router.delete("/:id", coursesControllers.deleteCourse)
+router.get("/:id", validation.validateParamsId, coursesControllers.getCourse);
+router.patch("/:id", validation.validateParamsId, validation.course, coursesControllers.updateCourse);
+router.delete("/:id", validation.validateParamsId, coursesControllers.deleteCourse);
 
 export default router;

@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import authenticated from './middleware/authenticated.js';
 import cors from 'cors';
 import errorHandler from './middleware/errors.js';
+import notFound from './middleware/notFound.js';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -18,6 +19,7 @@ app.use("/auth", authRouter);
 app.use(authenticated);
 app.use("/curators", curatorsRouter);
 app.use("/courses", coursesRouter);
+app.use(notFound);
 app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Listening on port http://localhost:${PORT}`);

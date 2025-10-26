@@ -6,6 +6,10 @@ const errorHandler = (err, req, res, next) => {
         res.status(404).json({ error: "Resource not found" });
         return;
     }
+    if (err.message === "404") {
+        res.status(404).json({ error: "Route not found" });
+        return;
+    }
     res.status(500).json({ error: "Internal Server Error" });
 };
 export default errorHandler;
