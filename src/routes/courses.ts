@@ -1,5 +1,13 @@
 import { Router } from "express";
+import * as coursesControllers from "../controllers/courses.js";
+import * as validation from "../middleware/validation.js";
 
 const router = Router();
+
+router.get("/", coursesControllers.getCourses);
+router.post("/", validation.course, coursesControllers.createCourse)
+router.get("/:id", coursesControllers.getCourse);
+router.patch("/:id", validation.course, coursesControllers.updateCourse);
+router.delete("/:id", coursesControllers.deleteCourse)
 
 export default router;

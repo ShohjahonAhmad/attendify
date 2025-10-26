@@ -12,3 +12,11 @@ export const deleteCurator = async (req, res, next) => {
     });
     res.sendStatus(204);
 };
+export const getCourses = async (req, res, next) => {
+    const curatorId = parseInt(req.user.id);
+    console.log(curatorId);
+    const courses = await prisma.course.findMany({
+        where: { curatorId }
+    });
+    res.status(200).json({ courses });
+};
