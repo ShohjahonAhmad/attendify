@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import prisma from "../prisma.js";
 import {randomUUID} from "crypto";
-import { parse } from "path";
+
 
 export const getCourses: RequestHandler = async (req, res, next) => {
     const courses = await prisma.course.findMany({
