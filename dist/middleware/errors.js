@@ -6,6 +6,11 @@ const errorHandler = (err, req, res, next) => {
         res.status(404).json({ error: "Resource not found" });
         return;
     }
+    if (err.code === "P2002") {
+        const conflictedItem = err.meta?.target[1] || err.meta?.target[0];
+        res.status(409).json({ error: `This ${conflictedItem} is already used` });
+        return;
+    }
     if (err.message === "404") {
         res.status(404).json({ error: "Route not found" });
         return;

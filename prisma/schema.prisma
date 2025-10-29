@@ -67,22 +67,23 @@ model Course {
   curator     Curator      @relation(fields: [curatorId], references: [id])
   attendances Attendance[]
   createdAt   DateTime     @default(now())
+
+  @@unique([curatorId, name])
 }
 
 model Attendance {
   id        Int       @id @default(autoincrement()) @map("attendance_id")
   students  Student[]
-  qrCode    QrCode    @relation(fields: [qrCodeId], references: [id])
-  qrCodeId  Int       @unique
   course    Course    @relation(fields: [courseId], references: [id])
   courseId  Int
   createdAt DateTime  @default(now())
+  qrCode    QrCode?
 }
 
 model QrCode {
-  id           Int         @id @default(autoincrement())
-  code         String
-  attendance   Attendance?
-  attendanceId Int
-  createdAt    DateTime    @default(now())
+  id           Int        @id @default(autoincrement())
+  code         String     @unique
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  attendanceId Int        @unique
+  createdAt    DateTime   @default(now())
 }
