@@ -177,3 +177,31 @@ export const deleteAttendance: RequestHandler = async (req, res, next) => {
 
     res.sendStatus(204);
 }
+
+export const handleSSE: RequestHandler = async (req, res, next) => {
+    const courseId = parseInt(req.params.id)
+    const attendanceId = parseInt(req.params.ID)
+    //Set headers to inform client to keep connection alive and server is sending event-stream data
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+
+    res.write("data: Connected to server\n\n");
+
+    const intervalId = setInterval(async () => {
+        // const students = await prisma.attendance.findUnique({
+        //     where: {
+        //         id: attendanceId,
+        //     },
+        //     include: {
+        //         students: true
+        //     }
+        // })
+        res.write(`data: ${JSON.stringify({})}\n\n`);
+    }, 5000)
+
+    res.on('close', () => {
+        clearInterval(intervalId);
+        res.end();
+    })
+}
