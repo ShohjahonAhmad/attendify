@@ -1,6 +1,7 @@
 // import prisma from "./prisma.js";
-export {};
+
 // // const students = await prisma.student.deleteMany();
+
 // const attendance = await prisma.attendance.update({
 //     where: {
 //         id: 4
@@ -30,4 +31,5 @@ export {};
 //         }
 //     }
 // })
+
 // console.log(await prisma.student.findMany());

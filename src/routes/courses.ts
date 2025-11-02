@@ -13,6 +13,6 @@ router.get("/:id/attendances", coursesControllers.getAttendances);
 router.post("/:id/attendances", coursesControllers.createAttendance);
 router.get("/:id/attendances/:ID", coursesControllers.getAttendance);
 router.delete("/:id/attendances/:ID", coursesControllers.deleteAttendance);
-router.get(":id/attendances/:id/events", coursesControllers.handleSSE);
+router.get("/:id/attendances/:ID/events", coursesControllers.handleSSE);
 
 export default router;

@@ -141,3 +141,34 @@ export const deleteAttendance = async (req, res, next) => {
     });
     res.sendStatus(204);
 };
+export const handleSSE = async (req, res, next) => {
+    const attendanceId = parseInt(req.params.ID);
+    const sendAttendance = async () => {
+        try {
+            const attendance = await prisma.attendance.findUnique({
+                where: { id: attendanceId },
+                include: {
+                    students: {
+                        select: { firstName: true, lastName: true, uniqueIdentifier: true, id: true }
+                    }
+                }
+            });
+            res.write(`event: attendanceUpdate\ndata: ${JSON.stringify(attendance)}\n\n`);
+        }
+        catch (err) {
+            console.error('SSE DB error', err);
+            res.write(`event: error\ndata: Failed to fetch student list\n\n`);
+        }
+    };
+    //Set headers to inform client to keep connection alive and server is sending event-stream data
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.write(`event: connected\ndata: Connected to server\n\n`);
+    sendAttendance();
+    const intervalId = setInterval(sendAttendance, 5000);
+    res.on('close', () => {
+        clearInterval(intervalId);
+        res.end();
+    });
+};
