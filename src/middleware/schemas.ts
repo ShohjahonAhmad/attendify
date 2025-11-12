@@ -36,3 +36,28 @@ export const CourseSchema = z.object({
 export const CreateCourse = CourseSchema.pick({
     name: true
 }).strict();
+
+
+export const StudentSchema = z.object({
+    id: z.number().int().nonnegative().optional(),
+    firstName: z.string(),
+    lastName: z.string(),
+    uniqueIdentifier: z.string(),
+    email: z.email("Invalid email format"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+    institution: z.string().optional(),
+    createdAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
+})
+
+export const CreateStudent = StudentSchema.pick({
+    firstName: true,
+    lastName: true,
+    uniqueIdentifier: true,
+    email: true,
+    institution: true //password auto-generated in backend
+}).strict();
+
+export const BulkCreateStudent = z.object({
+    students: z.array(CreateStudent).min(1, "At least one student is required"),
+})

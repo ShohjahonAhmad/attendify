@@ -35,4 +35,39 @@ const confirmEmail = async (recipientEmail: string, token: string) => {
     }
 }
 
+export const sendStudentInfo = async (student: {
+    email: string;
+    password: string;
+    uniqueIdentifier: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+    institution: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+}) => {
+    const mailOptions = {
+        from: `Attendify <${email}>`,
+        to: student.email,
+        subject: "Your Student Credentials",
+        text: `Hello ${student.firstName} ${student.lastName},
+
+            Your account has been created.
+
+            Email: ${student.email}
+            Password: ${student.password}
+
+            Please log in and change your password.`,
+    }
+
+    try{
+        const result = await transporter.sendMail(mailOptions);
+        console.log("Email sent:", result.response);
+        return true;
+    } catch(err){
+        console.error("Error sending email: ", err);
+        return false;
+    }
+}
+
 export default confirmEmail;

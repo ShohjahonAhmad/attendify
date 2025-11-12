@@ -17,6 +17,7 @@ model Student {
   id               Int          @id @default(autoincrement()) @map("users_id")
   firstName        String       @map("first_name")
   lastName         String       @map("last_name")
+  email            String       @unique
   uniqueIdentifier String       @unique @map("unique_identifier")
   password         String
   institution      String?

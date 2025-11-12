@@ -1,6 +1,6 @@
-// import prisma from "./prisma.js";
+import prisma from "./prisma.js";
 
-// // const students = await prisma.student.deleteMany();
+const students = await prisma.student.deleteMany();
 
 // const attendance = await prisma.attendance.update({
 //     where: {

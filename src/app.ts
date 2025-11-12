@@ -2,6 +2,7 @@ import express from 'express';
 import authRouter from "./routes/auth.js";
 import curatorsRouter from "./routes/curators.js";
 import coursesRouter from "./routes/courses.js";
+import studentsRouter from "./routes/students.js"
 import dotenv from 'dotenv';
 import authenticated from './middleware/authenticated.js';
 import cors from 'cors';
@@ -21,6 +22,7 @@ app.use("/auth", authRouter);
 app.use(authenticated);
 app.use("/curators", curatorsRouter);
 app.use("/courses", coursesRouter);
+app.use("/students", studentsRouter);
 
 
 app.use(notFound);
