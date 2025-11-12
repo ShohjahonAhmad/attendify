@@ -5,7 +5,12 @@ export const createStudents = async (req, res, next) => {
     let studentsRequest = req.body.students;
     studentsRequest = studentsRequest.map((student) => ({ ...student, password: generatePassword() }));
     const students = await prisma.student.createManyAndReturn({
-        data: studentsRequest
+        data: studentsRequest,
+        omit: {
+            createdAt: true,
+            updatedAt: true,
+            id: true
+        }
     });
     const failedEmails = [];
     for (let student of students) {

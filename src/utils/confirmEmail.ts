@@ -39,12 +39,9 @@ export const sendStudentInfo = async (student: {
     email: string;
     password: string;
     uniqueIdentifier: string;
-    id: number;
     firstName: string;
     lastName: string;
     institution: string | null;
-    createdAt: Date;
-    updatedAt: Date;
 }) => {
     const mailOptions = {
         from: `Attendify <${email}>`,

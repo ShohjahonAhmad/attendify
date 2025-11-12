@@ -9,7 +9,12 @@ export const createStudents : RequestHandler = async (req, res, next) => {
     studentsRequest = studentsRequest.map((student: any) => ({...student, password: generatePassword()}))
 
     const students = await prisma.student.createManyAndReturn({
-        data: studentsRequest
+        data: studentsRequest,
+        omit: {
+            createdAt: true,
+            updatedAt: true,
+            id: true
+        }
     })
     
     const failedEmails: string[] = [];
