@@ -1,202 +1,136 @@
-📘 Attendify — Automated Attendance System
+# 📘 Attendify --- Automated Attendance System
 
-Attendify is a full-stack automated attendance system designed for schools, universities, and training centers.
-It enables instructors to create classes and attendance sessions, and allows students to check in by scanning dynamically generated QR codes via the mobile app.
+Attendify is a full-stack automated attendance system designed for
+schools, universities, and training centers.\
+It enables **instructors** to create classes and attendance sessions,
+and allows **students** to check in by scanning dynamically generated QR
+codes via the mobile app.
 
 The system consists of three main parts:
 
-Attendify Backend (Express + TypeScript)
+-   **Attendify Backend (Express + TypeScript)**
+-   **Attendify Web (React.js for instructors)**
+-   **Attendify Mobile App (Expo React Native for students)**
 
-Attendify Web (React.js for instructors)
+## ✨ Features
 
-Attendify Mobile App (Expo React Native for students)
+### 🎓 Instructor (Web App)
 
-✨ Features
-🎓 Instructor (Web App)
+-   Create and manage classes
+-   Create attendance sessions
+-   Generate secure QR codes
+-   View live attendance table
+-   Track who scanned and when
+-   Manage users and authentication
 
-Create and manage classes
+### 📱 Student (Mobile App)
 
-Create attendance sessions
+-   Login using secure credentials
+-   Scan instructor-generated QR code
+-   Auto-check-in with timestamp + class information
+-   View personal attendance history *(if implemented)*
 
-Generate secure QR codes
+### 🖥️ Backend (Node + Express + TypeScript)
 
-View live attendance table
+-   REST API for web and mobile apps
+-   JWT authentication
+-   QR session generation & verification
+-   MongoDB/PostgreSQL/SQL (depending on Prisma config)
+-   Nodemailer for notifications
+-   Real-time or polling-based attendance fetching
 
-Track who scanned and when
+## 📁 Project Structure
 
-Manage users and authentication
+    Attendify/
+    │
+    ├── attendify        → Backend (Express + TypeScript)
+    │
+    └── Attendify-frontend
+          ├── web        → React web app for instructors
+          ├── mobile     → Expo React Native app for students
 
-📱 Student (Mobile App)
+## 🚀 Tech Stack
 
-Login using secure credentials
+### Frontend (Web)
 
-Scan instructor-generated QR code
+-   React.js + TypeScript
+-   Axios
+-   Tailwind (if used)
+-   Vite / CRA
 
-Auto-check-in with timestamp + class information
+### Mobile
 
-View personal attendance history (if implemented)
+-   Expo (React Native)
+-   Expo Camera / QR Scanner
+-   SecureStore for auth tokens
 
-🖥️ Backend (Node + Express + TypeScript)
+### Backend
 
-REST API for web and mobile apps
+-   Node.js + Express.js
+-   TypeScript
+-   Prisma ORM
+-   PostgreSQL / MongoDB / MySQL
+-   JWT Authentication
+-   Nodemailer
 
-JWT authentication
+## 🛠️ Installation & Setup
 
-QR session generation + verification
+### 1. Clone the repositories
 
-MongoDB/PostgreSQL/SQL (depending on your Prisma config)
+    git clone https://github.com/ShohjahonAhmad/attendify
+    git clone https://github.com/ShohjahonAhmad/Attendify-frontend
 
-Nodemailer for notifications (optional)
+## 🔧 Environment Variables
 
-Real-time or polling-based attendance fetching
+### Backend `.env`
 
-📁 Project Structure
-Attendify/
-│
-├── attendify        → Backend (Express + TypeScript)
-│     ├── src
-│     ├── prisma
-│     └── package.json
-│
-└── Attendify-frontend
-      ├── web        → React web app for instructors
-      ├── mobile     → Expo React Native app for students
-      └── package.json
+    PORT=5000
+    DATABASE_URL=your_database_connection_string
+    JWT_SECRET=your_jwt_secret_key
+    EMAIL_USER=your_email@example.com
+    EMAIL_PASS=email_password_or_app_password
+    BASE_URL=http://localhost:5000
 
-🚀 Tech Stack
-Frontend (Web)
+### Web `.env`
 
-React.js + TypeScript
+    VITE_BASE_URL=http://localhost:5000
 
-Axios
+### Mobile `.env`
 
-Tailwind (if used)
+    EXPO_PUBLIC_API_URL=http://your-local-ip:5000
 
-Vite / CRA
+## ▶️ Running the Backend
 
-Mobile (Students)
+    cd attendify
+    npm install
+    npm run dev
 
-Expo (React Native)
+## 🖥️ Running the Web App
 
-Expo Router / Navigation
+    cd Attendify-frontend/web
+    npm install
+    npm run dev
 
-Expo Camera / QR Scanner
+## 📱 Running the Mobile App
 
-SecureStore for auth tokens
+    cd Attendify-frontend/mobile
+    npm install
+    npx expo start
 
-Backend
+## 🎯 How Attendify Works
 
-Node.js + Express.js
+1.  Instructor creates a class\
+2.  Instructor starts an attendance session\
+3.  System generates a secure QR code\
+4.  Students scan the QR using the mobile app\
+5.  Backend verifies the session + student identity\
+6.  Attendance is saved\
+7.  Instructor sees real-time attendance data
 
-TypeScript
-
-Prisma ORM
-
-PostgreSQL / MongoDB / MySQL (depending on your config)
-
-JWT Authentication
-
-Nodemailer (email features)
-
-Zod / Yup (if used for validation)
-
-🛠️ Installation & Setup
-1. Clone the repositories
-git clone https://github.com/ShohjahonAhmad/attendify
-git clone https://github.com/ShohjahonAhmad/Attendify-frontend
-
-🔧 Environment Variables
-
-❗ These are required for backend and frontend to run.
-For security reasons, DO NOT commit them to GitHub.
-
-Backend .env example
-PORT=5000
-DATABASE_URL=your_database_connection_string
-JWT_SECRET=your_jwt_secret_key
-EMAIL_USER=your_email@example.com
-EMAIL_PASS=email_password_or_app_password
-BASE_URL=http://localhost:5000
-
-Web App .env example
-VITE_BASE_URL=http://localhost:5000
-
-Mobile App .env example
-EXPO_PUBLIC_API_URL=http://your-local-ip:5000
-
-▶️ Running the Backend
-cd attendify
-npm install
-npm run dev
-
-
-Backend will start on:
-
-http://localhost:5000
-
-🖥️ Running the Web App (Instructors)
-cd Attendify-frontend/web
-npm install
-npm run dev
-
-
-Web app typically runs on:
-
-http://localhost:5173
-
-📱 Running the Mobile App (Students)
-cd Attendify-frontend/mobile
-npm install
-npx expo start
-
-
-Scan the QR with Expo Go app or run on an emulator.
-
-🔒 Authentication Flow
-
-Both web and mobile use JWT tokens.
-
-Instructor logs in → receives token → stores in local storage/cookie.
-
-Student logs in via mobile app → token stored in SecureStore.
-
-QR session contains encrypted session ID that backend verifies.
-
-🎯 How Attendify Works
-
-Instructor creates a class.
-
-Instructor starts an attendance session.
-
-System generates a QR code containing a secure session token.
-
-Students open the mobile app and scan the QR code.
-
-Backend verifies:
-
-token validity
-
-session status
-
-student identity
-
-Attendance record is stored automatically.
-
-Instructor sees live table in real time.
-
-📊 Screenshots (add later)
-
-You can add screenshots or generated QR codes here.
-
-🤝 Contributing
-
-Pull requests are welcome. For major changes, open an issue first.
-
-📄 License
+## 📄 License
 
 MIT License
 
-✉️ Contact
+## ✉️ Contact
 
-Created by Shohjahon Ahmad
-Email: ahmshohjahon@gmail.com
+Email: **ahmshohjahon@gmail.com**
