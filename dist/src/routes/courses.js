@@ -1,0 +1,15 @@
+import { Router } from "express";
+import * as coursesControllers from "../controllers/courses.js";
+import * as validation from "../middleware/validation.js";
+const router = Router();
+router.get("/", coursesControllers.getCourses);
+router.post("/", validation.course, coursesControllers.createCourse);
+router.get("/:id", validation.validateParamsId, coursesControllers.getCourse);
+router.patch("/:id", validation.validateParamsId, validation.course, coursesControllers.updateCourse);
+router.delete("/:id", validation.validateParamsId, coursesControllers.deleteCourse);
+router.get("/:id/attendances", coursesControllers.getAttendances);
+router.post("/:id/attendances", coursesControllers.createAttendance);
+router.get("/:id/attendances/:ID", coursesControllers.getAttendance);
+router.delete("/:id/attendances/:ID", coursesControllers.deleteAttendance);
+router.get("/:id/attendances/:ID/events", coursesControllers.handleSSE);
+export default router;

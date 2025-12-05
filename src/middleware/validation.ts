@@ -29,3 +29,4 @@ export const register = validateBody(schemas.CreateCurator);
 export const login = validateBody(schemas.LoginCurator);
 export const course = validateBody(schemas.CreateCourse);
 export const bulkStudents = validateBody(schemas.BulkCreateStudent);
+export const loginStudent = validateBody(schemas.LoginStudent);

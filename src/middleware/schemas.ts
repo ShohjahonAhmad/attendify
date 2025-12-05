@@ -61,3 +61,8 @@ export const CreateStudent = StudentSchema.pick({
 export const BulkCreateStudent = z.object({
     students: z.array(CreateStudent).min(1, "At least one student is required"),
 })
+
+export const LoginStudent = StudentSchema.pick({
+    email: true,
+    password: true
+}).strict();

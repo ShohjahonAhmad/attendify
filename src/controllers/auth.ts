@@ -104,3 +104,31 @@ export const acceptEmail: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({message: "Your email is successfully verified!"})
 }
+
+export const loginStudent: RequestHandler = async (req, res, next) => {
+    const {email, password} = req.body;
+
+    const student = await prisma.student.findUnique({
+        where: {
+            email
+        }
+    });
+
+    if(!student){
+        res.status(401).json({error: "Invalid email or password"});
+        return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, student.password);
+
+    if(!isPasswordValid){
+        res.status(401).json({error: "Invalid email or password"});
+        return;
+    }
+
+    const token = jwt.sign({id: student.id, role: 'STUDENT'}, process.env.JWT_SECRET_KEY!, {
+        expiresIn: '365days'
+    });
+
+    res.status(200).json({token});
+}
