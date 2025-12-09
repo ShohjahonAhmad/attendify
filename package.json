@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "watch": "tsc --watch",
-    "dev": "nodemon dist/app.js"
+    "dev": "prisma generate && nodemon dist/app.js"
   },
   "keywords": [],
   "author": "",
