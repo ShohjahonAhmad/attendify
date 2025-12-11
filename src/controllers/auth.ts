@@ -132,3 +132,24 @@ export const loginStudent: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({token});
 }
+
+export const getMe: RequestHandler = async (req, res, next) => {
+    const {id, role} = req.user!;
+
+    if(role === "CURATOR"){
+        const curator = await prisma.curator.findUnique({
+            where: {id},
+            omit: {password: true}
+        })
+
+        res.status(200).json({curator});
+    } else {
+        const student = await prisma.student.findUnique({
+            where: {id},
+            omit: {password: true}
+        })
+
+        res.status(200).json({student});
+    }
+    
+}
