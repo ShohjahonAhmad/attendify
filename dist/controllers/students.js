@@ -35,7 +35,7 @@ export const markAttendance = async (req, res, next) => {
         const attendance = await prisma.attendance.update({
             where: {
                 id: attendanceId,
-                qrCode: code
+                qrCode: { code }
             },
             data: {
                 students: {
@@ -48,6 +48,7 @@ export const markAttendance = async (req, res, next) => {
         res.status(200).json({ message: "Attendance marked successfully" });
     }
     catch (err) {
+        console.log(err);
         res.status(400).json({ error: "Failed to mark attendance. Invalid attendance ID or code." });
     }
 };

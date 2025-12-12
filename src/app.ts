@@ -14,9 +14,17 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 
+
+app.use((req, res, next) => {
+    console.log(`hello ${req.path}`);
+    next();
+});
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 })
+
+
 
 app.use("/auth", authRouter);
 app.use(authenticated);
