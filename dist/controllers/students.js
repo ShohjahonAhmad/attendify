@@ -28,3 +28,26 @@ export const createStudents = async (req, res, next) => {
     }
     res.status(201).json({ students });
 };
+export const markAttendance = async (req, res, next) => {
+    try {
+        const { attendanceId, code } = req.body;
+        const studentId = req.user.id;
+        const attendance = await prisma.attendance.update({
+            where: {
+                id: attendanceId,
+                qrCode: code
+            },
+            data: {
+                students: {
+                    connect: {
+                        id: studentId,
+                    }
+                }
+            }
+        });
+        res.status(200).json({ message: "Attendance marked successfully" });
+    }
+    catch (err) {
+        res.status(400).json({ error: "Failed to mark attendance. Invalid attendance ID or code." });
+    }
+};
