@@ -2,17 +2,17 @@ import prisma from "./prisma.js";
 import bcrypt from 'bcrypt';
 console.log("running node script");
 const password = await bcrypt.hash("12345678", 10);
-const curator = await prisma.curator.create({
-    data: {
-        firstName: "Sherlok",
-        lastName: "Holms",
-        email: "shox_0502@mail.ru",
-        password: password,
-        institution: "UE",
-        verified: true,
-        uniqueIdentifier: "CURATOR001"
-    }
-});
+// const curator = await prisma.curator.create({
+//     data: {
+//         firstName: "Sherlok",
+//         lastName: "Holms",
+//         email: "shox_0502@mail.ru",
+//         password: password,
+//         institution: "UE",
+//         verified: true,
+//         uniqueIdentifier: "CURATOR001"
+//     }
+// })
 // const students = await prisma.student.createMany({
 //     data: [
 //         {
@@ -73,4 +73,11 @@ const curator = await prisma.curator.create({
 //         email: "akhmedovshokhjakhon3@gmail.com"
 //     }
 // }));
-console.log(await prisma.curator.findMany());
+console.log(await prisma.attendance.findUnique({
+    where: {
+        id: 1,
+    },
+    include: {
+        students: true
+    }
+}));

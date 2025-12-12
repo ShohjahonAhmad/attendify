@@ -57,7 +57,7 @@ export const LoginStudent = StudentSchema.pick({
     password: true
 }).strict();
 export const AttendanceSchema = z.object({
-    id: z.number().int().nonnegative(),
+    attendanceId: z.number().int().nonnegative(),
     code: z.string(),
     courseId: z.number().int().nonnegative(),
     createdAt: z.coerce.date(),
