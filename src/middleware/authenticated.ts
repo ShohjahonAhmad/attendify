@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
-dotenv.config()
+dotenv.config();
 
 const authenticated: RequestHandler = (req, res, next) => {
     try{
@@ -10,10 +10,10 @@ const authenticated: RequestHandler = (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!);
         req.user = decoded;
-        next()
+        next();
     } catch(err){
         res.status(401).json("Unauthenticated");
     }
 }
 
-export default authenticated
+export default authenticated;

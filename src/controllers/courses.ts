@@ -10,7 +10,7 @@ export const getCourses: RequestHandler = async (req, res, next) => {
         }
     });
 
-    res.status(200).json({courses})
+    res.status(200).json({courses});
 }
 
 export const createCourse: RequestHandler = async (req, res, next) => {
@@ -43,9 +43,9 @@ export const updateCourse: RequestHandler = async (req, res, next) => {
     const course = await prisma.course.update({
         where:{id: courseId},
         data: req.body
-    })
+    });
 
-    res.status(200).json({course})
+    res.status(200).json({course});
 }
 
 export const deleteCourse: RequestHandler = async (req, res, next) => {
@@ -55,7 +55,7 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
         where: {
             id: courseId
         }
-    })
+    });
 
     res.sendStatus(204);
 }
@@ -67,7 +67,7 @@ export const createAttendance: RequestHandler = async (req, res, next) => {
         where: {
             id: courseId
         }
-    })
+    });
 
     if(req.user.id !== course?.curatorId){
         res.status(403).json({error: "Forbidden"});
@@ -86,7 +86,7 @@ export const createAttendance: RequestHandler = async (req, res, next) => {
         include: {
             qrCode: true
         }
-    })
+    });
 
     res.json({attendance});
 }
@@ -97,7 +97,7 @@ export const getAttendances: RequestHandler = async (req, res, next) => {
         where: {
             id: courseId
         }
-    })
+    });
 
     if(!course){
         res.status(404).json({error: "Course not found"});
@@ -121,7 +121,7 @@ export const getAttendances: RequestHandler = async (req, res, next) => {
         }
     })
 
-    res.status(200).json({attendances})
+    res.status(200).json({attendances});
 }
 
 export const getAttendance: RequestHandler = async (req, res, next) =>{
@@ -131,7 +131,7 @@ export const getAttendance: RequestHandler = async (req, res, next) =>{
         where: {
             id: courseId
         }
-    })
+    });
 
     if(req.user.id !== course?.curatorId){
         res.status(403).json({error: "Forbidden"});
@@ -155,7 +155,7 @@ export const getAttendance: RequestHandler = async (req, res, next) =>{
         return;
     }
 
-    res.status(200).json({attendance})
+    res.status(200).json({attendance});
 }
 
 export const deleteAttendance: RequestHandler = async (req, res, next) => {
@@ -179,7 +179,7 @@ export const deleteAttendance: RequestHandler = async (req, res, next) => {
 }
 
 export const handleSSE: RequestHandler = async (req, res, next) => {
-    const attendanceId = parseInt(req.params.ID)
+    const attendanceId = parseInt(req.params.ID);
 
     const sendAttendance = async () => {
         try {
@@ -204,9 +204,9 @@ export const handleSSE: RequestHandler = async (req, res, next) => {
 
     res.write(`event: connected\ndata: Connected to server\n\n`);
 
-    sendAttendance()
+    sendAttendance();
 
-    const intervalId = setInterval(sendAttendance, 5000)
+    const intervalId = setInterval(sendAttendance, 5000);
 
     res.on('close', () => {
         clearInterval(intervalId);

@@ -1,9 +1,9 @@
 import { ErrorRequestHandler } from "express";
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    console.log("Err message: ", err.message)
-    console.log("Err code: ", err.code)
-    console.log("Err stack: ", err.stack)
+    console.log("Err message: ", err.message);
+    console.log("Err code: ", err.code);
+    console.log("Err stack: ", err.stack);
 
     if(err.code === "P2025"){
         res.status(404).json({error: "Resource not found"});
@@ -11,7 +11,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     }
 
     if(err.code === "P2002"){
-        const conflictedItem = err.meta?.target[1] || err.meta?.target[0]
+        const conflictedItem = err.meta?.target[1] || err.meta?.target[0];
         res.status(409).json({error: `This ${conflictedItem} is already used`});
         return;
     }
@@ -21,7 +21,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
         return;
     }
 
-    res.status(500).json({error: "Internal Server Error"})
+    res.status(500).json({error: "Internal Server Error"});
 }
 
 export default errorHandler;

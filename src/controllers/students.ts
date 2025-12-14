@@ -1,12 +1,12 @@
 import { RequestHandler } from "express";
 import prisma from "../prisma.js";
 import generatePassword from "../utils/generatePassword.js";
-import {sendStudentInfo} from "../utils/confirmEmail.js"
+import {sendStudentInfo} from "../utils/confirmEmail.js";
 
 export const createStudents : RequestHandler = async (req, res, next) => {
     let studentsRequest = req.body.students;
 
-    studentsRequest = studentsRequest.map((student: any) => ({...student, password: generatePassword()}))
+    studentsRequest = studentsRequest.map((student: any) => ({...student, password: generatePassword()}));
 
     const students = await prisma.student.createManyAndReturn({
         data: studentsRequest,
@@ -15,7 +15,7 @@ export const createStudents : RequestHandler = async (req, res, next) => {
             updatedAt: true,
             id: true
         }
-    })
+    });
     
     const failedEmails: string[] = [];
     
@@ -35,13 +35,13 @@ export const createStudents : RequestHandler = async (req, res, next) => {
         return;
     }
 
-    res.status(201).json({students})
+    res.status(201).json({students});
 }
 
 export const markAttendance : RequestHandler = async (req, res, next) => {  
     try{
         const {attendanceId, code} = req.body;
-        const studentId = req.user.id ;
+        const studentId = req.user.id;
         const attendance = await prisma.attendance.update({
             where: {
                 id: attendanceId,
@@ -54,7 +54,7 @@ export const markAttendance : RequestHandler = async (req, res, next) => {
                     }
                 }
             }
-        })
+        });
 
         res.status(200).json({message: "Attendance marked successfully"});
     } catch(err){

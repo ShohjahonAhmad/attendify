@@ -1,4 +1,4 @@
-import z from 'zod'
+import z from 'zod';
 
 export const CuratorSchema = z.object({
     id: z.number().int().nonnegative().optional(),
@@ -48,7 +48,7 @@ export const StudentSchema = z.object({
     institution: z.string().optional(),
     createdAt: z.coerce.date().optional(),
     updatedAt: z.coerce.date().optional(),
-})
+});
 
 export const CreateStudent = StudentSchema.pick({
     firstName: true,
@@ -60,7 +60,7 @@ export const CreateStudent = StudentSchema.pick({
 
 export const BulkCreateStudent = z.object({
     students: z.array(CreateStudent).min(1, "At least one student is required"),
-})
+});
 
 export const LoginStudent = StudentSchema.pick({
     email: true,
@@ -72,4 +72,4 @@ export const AttendanceSchema = z.object({
     code: z.string(),
     courseId: z.number().int().nonnegative(),
     createdAt: z.coerce.date(),
-})
+});

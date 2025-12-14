@@ -5,7 +5,7 @@ import isStudent from "../middleware/isStudent.js";
 
 const router = Router();
 
-router.post("/bulk", validation.bulkStudents, studentsController.createStudents)
+router.post("/bulk", validation.bulkStudents, studentsController.createStudents);
 router.post("/attendance", isStudent, validation.markAttendance, studentsController.markAttendance);
 
 export default router;
