@@ -123,3 +123,9 @@ export const getMe = async (req, res, next) => {
         res.status(200).json({ student });
     }
 };
+export const sendVerificationCode = (req, res, next) => {
+    res.status(200).send("Good job!");
+};
+export const resetPassword = (req, res, next) => {
+    res.status(200).send("Good job!");
+};

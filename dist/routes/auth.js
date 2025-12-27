@@ -7,5 +7,7 @@ router.post("/registration", validation.register, authControllers.register);
 router.post("/login", authControllers.login);
 router.get("/email-confirmation/:token", authControllers.acceptEmail);
 router.post("/student", validation.loginStudent, authControllers.loginStudent);
+router.post("/verification-code", authControllers.sendVerificationCode);
+router.post("/reset-password", authControllers.resetPassword);
 router.get("/me", authenticated, authControllers.getMe);
 export default router;

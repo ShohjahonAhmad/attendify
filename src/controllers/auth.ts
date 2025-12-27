@@ -153,3 +153,11 @@ export const getMe: RequestHandler = async (req, res, next) => {
     }
     
 }
+
+export const sendVerificationCode : RequestHandler = (req, res, next) => {
+    res.status(200).send("Good job!");
+}
+
+export const resetPassword : RequestHandler = (req, res, next) => { 
+    res.status(200).send("Good job!");
+}
