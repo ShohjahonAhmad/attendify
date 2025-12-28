@@ -67,4 +67,35 @@ export const sendStudentInfo = async (student: {
     }
 }
 
+export const sendCode = async (receiverEmail: string, code: string) => {
+    const mailOptions = {
+        from: `Attendify <${email}>`,
+        to: receiverEmail,
+        subject: "Password Reset Verification Code",
+        text: `Your verification code is: ${code}\n\nThis code will expire in 15 minutes.\n\nIf you did not request this code, please ignore this email.`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #333;">Password Reset Verification</h2>
+                <p>Your verification code is:</p>
+                <div style="background-color: #f4f4f4; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0;">
+                    ${code}
+                </div>
+                <p style="color: #666;">This code will expire in <strong>15 minutes</strong>.</p>
+                <p style="color: #999; font-size: 12px;">If you did not request this code, please ignore this email and ensure your account is secure.</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                <p style="color: #999; font-size: 11px;">This is an automated message from Attendify. Please do not reply to this email.</p>
+            </div>
+        `
+    }
+
+    try{
+        await transporter.sendMail(mailOptions);
+        console.log("Verification code sent to:", receiverEmail);
+        return true;
+    }catch(err){
+        console.error("Error sending verification code: ", err);
+        return false;
+    }
+}
+
 export default confirmEmail;

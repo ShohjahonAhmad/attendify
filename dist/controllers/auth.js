@@ -2,7 +2,7 @@ import prisma from "../prisma.js";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import jwt from "jsonwebtoken";
-import confirmEmail from "../utils/confirmEmail.js";
+import confirmEmail, { sendCode } from "../utils/confirmEmail.js";
 import dotenv from 'dotenv';
 dotenv.config();
 export const register = async (req, res, next) => {
@@ -123,9 +123,69 @@ export const getMe = async (req, res, next) => {
         res.status(200).json({ student });
     }
 };
-export const sendVerificationCode = (req, res, next) => {
-    res.status(200).send("Good job!");
+export const sendVerificationCode = async (req, res, next) => {
+    const { email } = req.body;
+    const student = await prisma.student.findUnique({
+        where: {
+            email: email
+        }
+    });
+    if (!student) {
+        res.status(200).json({ message: "If the email exists, a verification code has been sent." });
+        return;
+    }
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = new Date(Date.now() + 1000 * 60 * 15); // 15 minutes
+    await prisma.passwordCode.create({
+        data: {
+            code,
+            expires,
+            studentId: student.id
+        }
+    });
+    const isSent = await sendCode(email, code);
+    if (!isSent) {
+        res.status(500).json({ error: "Error sending code to your email. Try again later" });
+        return;
+    }
+    res.status(200).json({ message: "If the email exists, a verification code has been sent." });
 };
-export const resetPassword = (req, res, next) => {
-    res.status(200).send("Good job!");
+export const resetPassword = async (req, res, next) => {
+    const { code, email, password } = req.body;
+    const codeDb = await prisma.passwordCode.findUnique({
+        where: {
+            code,
+        },
+        include: {
+            student: true
+        }
+    });
+    const genericError = "Invalid or expired verification code";
+    if (!codeDb) {
+        res.status(400).json({ error: genericError });
+        return;
+    }
+    if (codeDb.expires < new Date()) {
+        res.status(400).json({ error: genericError });
+        return;
+    }
+    if (codeDb.student.email !== email) {
+        res.status(400).json({ error: genericError });
+        return;
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.$transaction([
+        prisma.student.update({
+            where: {
+                id: codeDb.studentId,
+            },
+            data: {
+                password: hashedPassword
+            }
+        }),
+        prisma.passwordCode.delete({
+            where: { id: codeDb.id },
+        })
+    ]);
+    res.status(200).json({ message: "Password has been changed successfully. You can login now!" });
 };

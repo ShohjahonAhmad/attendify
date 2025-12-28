@@ -31,3 +31,5 @@ export const course = validateBody(schemas.CreateCourse);
 export const bulkStudents = validateBody(schemas.BulkCreateStudent);
 export const loginStudent = validateBody(schemas.LoginStudent);
 export const markAttendance = validateBody(schemas.AttendanceSchema);
+export const passwordResetEmail = validateBody(schemas.PasswordResetEmail);
+export const resetPassword = validateBody(schemas.PasswordReset);

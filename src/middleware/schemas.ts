@@ -67,6 +67,16 @@ export const LoginStudent = StudentSchema.pick({
     password: true
 }).strict();
 
+export const PasswordResetEmail = StudentSchema.pick({
+    email: true
+}).strict();
+
+export const PasswordReset = z.object({
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+    code: z.string().min(6, "Invalid verification code"),
+    email: z.email("Invalid email format"),
+});
+
 export const AttendanceSchema = z.object({
     attendanceId: z.number().int().nonnegative(),
     code: z.string(),
