@@ -186,7 +186,7 @@ export const sendVerificationCode : RequestHandler = async (req, res, next) => {
         return;
     }
 
-    res.status(200).json({message: "If the email exists, a verification code has been sent."});
+    res.status(200).json({code});
 }
 
 export const resetPassword : RequestHandler = async (req, res, next) => { 
