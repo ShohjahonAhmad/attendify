@@ -1,15 +1,26 @@
 import { RequestHandler } from "express";
 import prisma from "../prisma.js";
 import generatePassword from "../utils/generatePassword.js";
+import bcrypt from "bcrypt";
 import {sendStudentInfo} from "../utils/confirmEmail.js";
 
 export const createStudents : RequestHandler = async (req, res, next) => {
-    let studentsRequest = req.body.students;
+    const studentsRequest = req.body.students;
 
-    studentsRequest = studentsRequest.map((student: any) => ({...student, password: generatePassword()}));
+    const studentsWithPlainPasswords = studentsRequest.map((student: any) => ({
+        ...student, 
+        password: generatePassword()
+    }));
+
+    const studentWithHashedPasswords = await Promise.all(
+        studentsWithPlainPasswords.map(async (student: any) => ({
+            ...student, 
+            password: await bcrypt.hash(student.password, 10)
+        }))
+    );
 
     const students = await prisma.student.createManyAndReturn({
-        data: studentsRequest,
+        data: studentWithHashedPasswords,
         omit: {
             createdAt: true,
             updatedAt: true,
@@ -19,7 +30,7 @@ export const createStudents : RequestHandler = async (req, res, next) => {
     
     const failedEmails: string[] = [];
     
-    for(let student of students){
+    for(let student of studentsWithPlainPasswords){
         const isSuccessful = await sendStudentInfo(student);
         if(!isSuccessful){
             failedEmails.push(student.email);
@@ -27,15 +38,15 @@ export const createStudents : RequestHandler = async (req, res, next) => {
     }
 
     if(failedEmails.length > 0){
+        console.log(failedEmails)
         res.status(500).json({
             error: "Failed to email student credentials to student emails",
             failedEmails
-        },
-        );
+        });
         return;
     }
 
-    res.status(201).json({students});
+    res.status(201).json({students: studentsWithPlainPasswords});
 }
 
 export const markAttendance : RequestHandler = async (req, res, next) => {  

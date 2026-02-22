@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 
 console.log("running node script");
-const password = await bcrypt.hash("12345678", 10);
+// const password = await bcrypt.hash("12345678", 10);
 // const curator = await prisma.curator.create({
 //     data: {
 //         firstName: "Sherlok",
@@ -79,11 +79,15 @@ const password = await bcrypt.hash("12345678", 10);
 //     }
 // }));
 
-console.log(await prisma.attendance.findUnique({
-    where: {
-        id: 1,
-    },
-    include: {
-        students: true
-    }
-}))
+// console.log(await prisma.attendance.findUnique({
+//     where: {
+//         id: 1,
+//     },
+//     include: {
+//         students: true
+//     }
+// }))
+
+// console.log(await prisma.curator.findMany());
+console.log(await prisma.student.deleteMany());
+console.log(await prisma.student.findMany());

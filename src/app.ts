@@ -24,14 +24,11 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 })
 
-
-
 app.use("/auth", authRouter);
 app.use(authenticated);
 app.use("/curators", curatorsRouter);
 app.use("/courses", coursesRouter);
 app.use("/students", studentsRouter);
-
 
 app.use(notFound);
 app.use(errorHandler);

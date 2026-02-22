@@ -148,7 +148,7 @@ export const sendVerificationCode = async (req, res, next) => {
         res.status(500).json({ error: "Error sending code to your email. Try again later" });
         return;
     }
-    res.status(200).json({ message: "If the email exists, a verification code has been sent." });
+    res.status(200).json({ code });
 };
 export const resetPassword = async (req, res, next) => {
     const { code, email, password } = req.body;
